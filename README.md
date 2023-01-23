@@ -16,4 +16,38 @@ available on port 5433.
 
 
 
+```bash
+mkdir ~/pgosm-data
+export POSTGRES_USER=postgres
+export POSTGRES_PASSWORD=mysecretpassword
+
+docker run --name pgosm -d --rm \
+    -v ~/pgosm-data:/app/output \
+    -v ~/git/pgosm-flex-faker/:/custom-layerset \
+    -v /etc/localtime:/etc/localtime:ro \
+    -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+    -p 5433:5432 -d rustprooflabs/pgosm-flex
+
+docker exec -it \
+    pgosm python3 docker/pgosm_flex.py \
+    --ram=8 \
+    --region=north-america/us \
+    --subregion=ohio \
+    --layerset=faker_layerset \
+    --layerset-path=/custom-layerset/ 
+```
+
+
+After loading, connect and run the `osm-faker.sql`.
+Each time running will generate slightly different results.
+
+
+Version 1
+
+![](osm-faker-stores-in-ohio-1.png)
+
+Version 2
+
+![](osm-faker-stores-in-ohio-2.png)
+
 

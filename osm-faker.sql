@@ -1,4 +1,4 @@
-SELECT id, imported, osm_date, pgosm_flex_version,
+SELECT id, region, imported, osm_date, pgosm_flex_version,
         osm2pgsql_mode
     FROM osm.pgosm_flex 
 ;
