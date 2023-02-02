@@ -3,8 +3,6 @@ SELECT id, region, imported, osm_date, pgosm_flex_version,
     FROM osm.pgosm_flex 
 ;
 
-SELECT version();
-
 
 -- Basic selection, provide attributes used to rank locations
 DROP TABLE IF EXISTS places_for_shops_1;
