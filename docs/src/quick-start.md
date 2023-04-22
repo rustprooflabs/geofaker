@@ -5,7 +5,7 @@ Words
 ## Load OpenStreetMap Data
 
 Load the region/subregion you want using the PgOSM Flex Docker image.
-These instructions are modified from [PgOSM Flex's Quick Start](https://github.com/rustprooflabs/pgosm-flex#quick-start) section. The following
+These instructions are modified from [PgOSM Flex's Quick Start](https://pgosm-flex.com/quick-start.html) section. The following
 loads the data into a PostGIS enabled database in a `pgosm-flex-faker`
 Docker container available on port 5433.
 
