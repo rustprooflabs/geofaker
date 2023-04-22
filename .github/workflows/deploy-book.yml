@@ -3,7 +3,7 @@ name: Deploy mdbook
 on:
   push:
     branches:
-      - improve-logic
+      - main
 
 jobs:
   deploy:
