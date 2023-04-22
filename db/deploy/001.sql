@@ -5,13 +5,13 @@ BEGIN;
 CREATE SCHEMA pgosm_flex_faker;
 
 
-CREATE PROCEDURE pgosm_flex_faker.location_in_place_landuse()
+CREATE PROCEDURE pgosm_flex_faker.point_in_place_landuse()
 LANGUAGE plpgsql
 AS $$
 BEGIN
 
-	-- Define a custom `place_osm_types` table before executing to customize areas
-	CREATE TEMP TABLE IF NOT EXISTS place_osm_types AS
+	-- Define a custom `landuse_osm_types` table before executing to customize areas
+	CREATE TEMP TABLE IF NOT EXISTS landuse_osm_types AS
 	SELECT 'retail' AS osm_type
 	UNION
 	SELECT 'commercial' AS osm_type
@@ -24,16 +24,19 @@ BEGIN
 	WITH base AS (
 	SELECT osm_id, name, osm_type, admin_level, nest_level,
 			-- Rounding is assuming SRID 3857, or another unit in Meters or Feet.
-			ROUND(public.ST_Area(geom)::NUMERIC, 0) AS geom_area, geom
+			ROUND(public.ST_Area(geom)::NUMERIC, 0) AS geom_area,
+			geom
 		FROM osm.place_polygon_nested
 		-- Using innermost places to reduce likelihood over overlap
 		WHERE innermost
-			AND name <> ''
-			AND admin_level < 99
+			-- originally had following more strict checks, considering leaving
+			-- them off to make more flexible
+			/*AND name <> ''
+			AND admin_level < 99*/
 	), with_space AS (
 	-- Within each Place, find how many places are "near" (intersects)
 	-- or contain the types of places (commercial, retail, residential, etc)
-	-- defined in place_osm_types  
+	-- defined in landuse_osm_types  
 	SELECT b.osm_id,
 			COUNT(lp.osm_id) AS near_areas,
 			COALESCE(SUM(public.ST_Area(lp.geom)), 0) AS near_space,
@@ -42,10 +45,10 @@ BEGIN
 		FROM base b
 		LEFT JOIN osm.landuse_polygon lp
 			ON public.ST_Intersects(b.geom, lp.geom)
-				AND lp.osm_type IN (SELECT osm_type FROM place_osm_types)
+				AND lp.osm_type IN (SELECT osm_type FROM landuse_osm_types)
 		LEFT JOIN osm.landuse_polygon c
 			ON public.ST_Contains(b.geom, c.geom)
-				AND c.osm_type IN (SELECT osm_type FROM place_osm_types)
+				AND c.osm_type IN (SELECT osm_type FROM landuse_osm_types)
 		GROUP BY b.osm_id
 	)
 	SELECT b.*, ws.contained_areas, ws.contained_space,
@@ -117,6 +120,7 @@ BEGIN
 	CREATE TEMP TABLE selected AS
 	WITH a AS (
 	SELECT p.osm_id,
+			-- Range of total_score:  .02 - .65
 			s.contained_space_score + s.near_space_score
 				AS total_score,
 			random() as rnd
@@ -179,21 +183,28 @@ BEGIN
 	;
 
 
-	-----------------------------------------
-	-- Identify roads where a building could be
-	-- Not using actual buildings / addresses because:
-	---- a) privacy
-	---- b) coverage
+	/*
+	Identify roads where a building could be
+	Not using actual buildings / addresses because:
+	    a) privacy
+	    b) coverage
+
+	Main limitation of this is the point chosen on the road could extend far
+	outside of the landuse.
+	As I'm writing these initial versions I don't care, consider splitting road
+	lines on the place boundaries to limit in the future if desired.
+	*/
 	DROP TABLE IF EXISTS selected_roads ;
 	CREATE TEMP TABLE selected_roads AS
 	WITH road_ranks AS (
-	SELECT p.osm_id AS place_osm_id, p.name AS place_name,
+	SELECT p.osm_id AS place_osm_id, p.osm_type AS place_osm_type,
+			p.name AS place_name,
 			rr.normalized_rnk AS road_type_score,
 			r.osm_id AS road_osm_id
 		FROM faker_place_polygon p
 		INNER JOIN osm.landuse_polygon c
 			ON public.ST_Contains(p.geom, c.geom)
-				AND c.osm_type IN (SELECT osm_type FROM place_osm_types)
+				AND c.osm_type IN (SELECT osm_type FROM landuse_osm_types)
 		INNER JOIN osm.road_line r
 			ON c.geom && r.geom
 				AND r.route_motor
@@ -216,8 +227,8 @@ BEGIN
 
 	DROP TABLE IF EXISTS faker_store_location;
 	CREATE TEMP TABLE faker_store_location AS
-	SELECT a.place_osm_id, a.place_name, a.road_osm_id,
-			r.osm_type, r.name, r.ref,
+	SELECT a.place_osm_id, a.place_osm_type, a.place_name, a.road_osm_id,
+			r.osm_type AS road_osm_type, r.name AS road_name, r.ref AS road_ref,
 			public.ST_LineInterpolatePoint(public.ST_LineMerge(r.geom), random()) AS geom
 		FROM selected_roads a
 		INNER JOIN osm.road_line r ON a.road_osm_id = r.osm_id
