@@ -1,6 +1,7 @@
 # Quick Start to PgOSM Flex Faker
 
-Words
+This section covers how to get started with the Faker version of PgOSM Flex.
+
 
 ## Load OpenStreetMap Data
 
@@ -51,44 +52,28 @@ random results.
 
 ## Run Faker generation
 
+The stored procedure `pgosm_flex_faker.point_in_place_landuse()` places points
+along roads that are within (or nearby) specific `landuse` areas.  The generated
+data is available after calling the stored procedure in a temporary table
+named `faker_store_location`.
+The generated data is scoped to named places currently, though that will
+likely become adjustable in the future.
+
+
 ```sql
 CALL pgosm_flex_faker.point_in_place_landuse();
 SELECT COUNT(*) FROM faker_store_location;
 ```
 
 
-Save the data somewhere you want, in a non-temp table.
+The following query saves the data in a new, non-temporary table named
+`my_fake_stores`.
+
+
 
 ```sql
 CREATE TABLE my_fake_stores AS
 SELECT *
     FROM faker_store_location
-;
-```
-
-
-Rerun, save second set.
-
-```sql
-CALL pgosm_flex_faker.point_in_place_landuse();
-CREATE TABLE my_fake_stores_v2 AS
-SELECT *
-    FROM faker_store_location
-;
-```
-
-## Custom Places for Shops
-
-The procedure `pgosm_flex_faker.point_in_place_landuse()` allows overriding
-the inclusion of `retail` and `commercial` landuse.
-
-```sql
-DROP TABLE IF EXISTS landuse_osm_types;
-CREATE TEMP TABLE IF NOT EXISTS landuse_osm_types AS
-SELECT 'college' AS osm_type
-UNION
-SELECT 'recreation_ground' AS osm_type
-UNION
-SELECT 'vineyard' AS osm_type
 ;
 ```

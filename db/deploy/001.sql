@@ -227,7 +227,7 @@ BEGIN
 
 	DROP TABLE IF EXISTS faker_store_location;
 	CREATE TEMP TABLE faker_store_location AS
-	SELECT a.place_osm_id, a.place_osm_type, a.place_name, a.road_osm_id,
+	SELECT ROW_NUMBER() OVER () AS id, a.place_osm_id, a.place_osm_type, a.place_name, a.road_osm_id,
 			r.osm_type AS road_osm_type, r.name AS road_name, r.ref AS road_ref,
 			public.ST_LineInterpolatePoint(public.ST_LineMerge(r.geom), random()) AS geom
 		FROM selected_roads a
@@ -238,6 +238,61 @@ BEGIN
 END
 $$
 ;
+
+
+
+
+-- From: https://trac.osgeo.org/postgis/wiki/UserWikiRandomPoint
+
+CREATE FUNCTION pgosm_flex_faker.n_points_in_polygon(geom geometry, num_points integer)
+  	RETURNS SETOF geometry 
+    LANGUAGE plpgsql VOLATILE
+  	COST 100
+  	ROWS 1000
+AS $$
+DECLARE
+	target_proportion numeric;
+	n_ret integer := 0;
+	loops integer := 0;
+	x_min float8;
+	y_min float8;
+	x_max float8;
+	y_max float8;
+	srid integer;
+	rpoint geometry;
+BEGIN
+	-- Get envelope and SRID of source polygon
+	SELECT ST_XMin(geom), ST_YMin(geom), ST_XMax(geom), ST_YMax(geom), ST_SRID(geom)
+		INTO x_min, y_min, x_max, y_max, srid;
+	-- Get the area proportion of envelope size to determine if a
+	-- result can be returned in a reasonable amount of time
+	SELECT ST_Area(geom)/ST_Area(ST_Envelope(geom)) INTO target_proportion;
+	RAISE DEBUG 'geom: SRID %, NumGeometries %, NPoints %, area proportion within envelope %',
+					srid, ST_NumGeometries(geom), ST_NPoints(geom),
+					round(100.0*target_proportion, 2) || '%';
+	IF target_proportion < 0.0001 THEN
+		RAISE EXCEPTION 'Target area proportion of geometry is too low (%)', 
+						100.0*target_proportion || '%';
+	END IF;
+	RAISE DEBUG 'bounds: % % % %', x_min, y_min, x_max, y_max;
+	
+	WHILE n_ret < num_points LOOP
+		loops := loops + 1;
+		SELECT ST_SetSRID(ST_MakePoint(random()*(x_max - x_min) + x_min,
+									random()*(y_max - y_min) + y_min),
+						srid) INTO rpoint;
+		IF ST_Contains(geom, rpoint) THEN
+		n_ret := n_ret + 1;
+		RETURN NEXT rpoint;
+		END IF;
+	END LOOP;
+	RAISE DEBUG 'determined in % loops (% efficiency)', loops, round(100.0*num_points/loops, 2) || '%';
+END
+$$
+;
+
+
+
 
 
 COMMIT;
