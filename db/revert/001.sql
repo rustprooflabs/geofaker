@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP SCHEMA pgosm_flex_faker CASCADE;
+DROP SCHEMA geo_faker CASCADE;
 
 COMMIT;
