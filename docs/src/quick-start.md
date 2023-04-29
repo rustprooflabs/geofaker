@@ -9,8 +9,10 @@ also known as Geo Faker.
 The basic process to using Geo Faker are:
 
 * Run PgOSM Flex with custom layerset
-* Load PgOSM Flex Faker objects
-* 
+* Load Geo Faker objects
+* Run stored procedures
+* Move temp table data to real tables
+
 
 ## Load OpenStreetMap Data
 
@@ -47,7 +49,7 @@ docker exec -it \
 
 ## Load Faker Objects
 
-After the data completes processing, load the PgOSM Flex Faker database structures
+After the data completes processing, load the Geo Faker database structures
 in the `geo_faker` schema.
 This is done using Sqitch.
 

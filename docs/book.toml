@@ -3,10 +3,10 @@ authors = ['Ryan Lambert', 'RustProof Labs']
 language = "en"
 multilingual = false
 src = "src"
-title = "PgOSM Flex Faker"
+title = "Geo Faker"
 
 [output.html]
 default-theme = "rust"
 preferred-dark-theme = "navy"
-git-repository-url = "https://github.com/rustprooflabs/pgosm-flex-faker"
+git-repository-url = "https://github.com/rustprooflabs/geo-faker"
 git-repository-icon = "fa-github"
