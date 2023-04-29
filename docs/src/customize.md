@@ -5,23 +5,6 @@ This section builds on the [Quick Start](quick-start.md) section.
 > Warning: This project is in early development!  Things will be changing over the first few releases (e.g. before 0.5.0).
 
 
-## External Postgres connections
-
-The quick start uses the built-in Postgres/PostGIS instance. See
-the PgOSM Flex section on [Using external Postgres connections](https://pgosm-flex.com/postgres-external.html) to use your own Postgres instance.
-This approach does load a lot of data to the target database which may not be
-desired.  Consider using `pg_dump` to load only the target data to your
-database of choice.
-
-The Sqitch deployment step should use additional parameters not set in the quick start
-instructions.
-
-```bash
-source ~/.pgosm-faker-local
-cd pgosm-flex-faker/db
-sqitch db:pg://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB deploy
-```
-
 
 ## Each time is new data
 
@@ -54,3 +37,13 @@ UNION
 SELECT 'vineyard' AS osm_type
 ;
 ```
+
+
+## External Postgres connections
+
+Geo Faker currently does not support running directly into an external database.
+Technically it can be operated that way, but the instructions and helper scripts
+are specific to using the in-Docker database.
+
+Use `--pg-dump` to extract the generated data.
+

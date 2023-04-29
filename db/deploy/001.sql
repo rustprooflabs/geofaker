@@ -292,8 +292,12 @@ COMMENT ON FUNCTION geofaker.n_points_in_polygon(GEOMETRY, INT) IS 'Creates N po
 
 
 
--- Call the procedure to ensure the required temp table exists, avoids deploy failure
-CALL geofaker.point_in_place_landuse();
+-- Ensure the required temp table exists, avoids deploy failure on next sproc
+CREATE TEMP TABLE IF NOT EXISTS faker_store_location
+(
+	store_id BIGINT, place_osm_id BIGINT, place_osm_type TEXT, place_name TEXT,
+	road_osm_id BIGINT, geom GEOMETRY
+);
 
 
 CREATE PROCEDURE geofaker.points_around_point()

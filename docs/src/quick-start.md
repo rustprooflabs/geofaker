@@ -49,14 +49,18 @@ docker exec -it \
 ## Load and Run Faker Objects
 
 After the data completes processing, load the Geo Faker database structures
-in the `geofaker` schema.
-This is done using Sqitch.
+in the `geofaker` schema.  This deploys the functions and procedures needed,
+runs the processing, and runs `pg_dump` saving the faked
+data into `~/pgosm-data/geofaker_stores_customers.sql`.
 
 
 ```bash
 docker exec -it geofaker /bin/bash run_faker.sh
 ```
 
-Connect to the database and call this stored procedure.  The generated data
-is left in a temp table, each run of the stored procedure will produce new,
-random results.
+Load the saved data into a database of your choice.
+
+```bash
+psql -d pgosm_faker -f ~/pgosm-data/geofaker_stores_customers.sql 
+```
+
