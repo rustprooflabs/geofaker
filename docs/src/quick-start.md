@@ -19,7 +19,7 @@ The basic process to using Geo Faker are:
 Load the region/subregion you want using the PgOSM Flex Docker image.
 These instructions are modified from
 [PgOSM Flex's Quick Start](https://pgosm-flex.com/quick-start.html)
-section. The following loads the data into a PostGIS enabled database in a `geo-faker`
+section. The following loads the data into a PostGIS enabled database in a `geofaker`
 Docker container available on port 5433.
 
 
@@ -28,84 +28,35 @@ mkdir ~/pgosm-data
 export POSTGRES_USER=postgres
 export POSTGRES_PASSWORD=mysecretpassword
 
-docker pull rustprooflabs/geo-faker:latest
+docker pull rustprooflabs/geofaker:latest
 
-docker run --name pgosm-faker -d --rm \
+docker run --name geofaker -d --rm \
     -v ~/pgosm-data:/app/output \
-    -v ~/git/geo-faker/:/custom-layerset \
     -v /etc/localtime:/etc/localtime:ro \
+    -e POSTGRES_USER=$POSTGRES_USER \
     -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
-    -p 5433:5432 -d rustprooflabs/geo-faker
+    -p 5433:5432 -d rustprooflabs/geofaker
 
 docker exec -it \
-    pgosm-faker python3 docker/pgosm_flex.py \
+    geofaker python3 docker/pgosm_flex.py \
     --ram=8 \
     --region=north-america/us \
     --subregion=nebraska \
-    --layerset=faker_layerset \
-    --layerset-path=/custom-layerset/
+    --layerset=faker
 ```
 
 
-## Load Faker Objects
+## Load and Run Faker Objects
 
 After the data completes processing, load the Geo Faker database structures
-in the `geo_faker` schema.
+in the `geofaker` schema.
 This is done using Sqitch.
 
 
 ```bash
-cd geo-faker/db
-sqitch db:pg://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5433/pgosm deploy
+docker exec -it geofaker /bin/bash run_faker.sh
 ```
 
 Connect to the database and call this stored procedure.  The generated data
 is left in a temp table, each run of the stored procedure will produce new,
 random results.
-
-## Run Faker generation
-
-There are two stored procedures in the `geo_faker` schema that
-generate the fake stores and customers.
-
-
-The stored procedure `geo_faker.point_in_place_landuse()` places points
-along roads that are within (or nearby) specific `landuse` areas.  The generated
-data is available after calling the stored procedure in a temporary table
-named `faker_store_location`.
-The generated data is scoped to named places currently, though that will
-likely become adjustable in the future.
-
-
-The `geo_faker.point_in_place_landuse()` stored procedure requires
-the `faker_store_location` temp table created by the first stored procedure.
-
-
-
-```sql
-CALL geo_faker.point_in_place_landuse();
-CALL geo_faker.points_around_point();
-```
-
-The following query saves the data in a new, non-temporary table named
-`my_fake_stores`.
-
-
-
-
-
-
-```sql
-CREATE TABLE my_fake_stores AS
-SELECT *
-    FROM faker_store_location
-;
-
-CREATE TABLE my_fake_customers AS
-SELECT *
-    FROM faker_customer_location
-;
-```
-
-
-

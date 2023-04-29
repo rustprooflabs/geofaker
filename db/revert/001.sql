@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP SCHEMA geo_faker CASCADE;
+DROP SCHEMA geofaker CASCADE;
 
 COMMIT;

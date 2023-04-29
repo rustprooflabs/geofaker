@@ -8,5 +8,5 @@ title = "Geo Faker"
 [output.html]
 default-theme = "rust"
 preferred-dark-theme = "navy"
-git-repository-url = "https://github.com/rustprooflabs/geo-faker"
+git-repository-url = "https://github.com/rustprooflabs/geofaker"
 git-repository-icon = "fa-github"
