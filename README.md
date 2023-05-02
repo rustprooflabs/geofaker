@@ -5,4 +5,4 @@ components based on OpenStreetMap.  The use of OpenStreetMap data
 as a starting point provides a sense of realism. The use of `random()`
 and to generate fake data avoids privacy concerns.
 
-See the [project documentation](https://faker.pgosm-flex.com) for more information.
+See the [project documentation](https://geofaker.com) for more information.
