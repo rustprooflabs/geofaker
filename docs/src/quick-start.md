@@ -35,13 +35,13 @@ docker run --name geofaker -d --rm \
     -v /etc/localtime:/etc/localtime:ro \
     -e POSTGRES_USER=$POSTGRES_USER \
     -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
-    -p 5433:5432 -d rustprooflabs/geofaker
+    -p 5439:5432 -d rustprooflabs/geofaker
 
 docker exec -it \
     geofaker python3 docker/pgosm_flex.py \
     --ram=8 \
     --region=north-america/us \
-    --subregion=nebraska \
+    --subregion=colorado \
     --layerset=faker
 ```
 

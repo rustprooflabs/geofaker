@@ -239,8 +239,6 @@ COMMENT ON PROCEDURE geofaker.point_in_place_landuse IS 'Uses osm.landuse_polygo
 ;
 
 
--- From: https://trac.osgeo.org/postgis/wiki/UserWikiRandomPoint
-
 CREATE FUNCTION geofaker.n_points_in_polygon(geom geometry, num_points integer)
   	RETURNS SETOF geometry 
     LANGUAGE plpgsql VOLATILE
@@ -288,11 +286,11 @@ END
 $$
 ;
 
-COMMENT ON FUNCTION geofaker.n_points_in_polygon(GEOMETRY, INT) IS 'Creates N points randomly within the given polygon.';
+COMMENT ON FUNCTION geofaker.n_points_in_polygon(GEOMETRY, INT) IS 'Creates N points randomly within the given polygon.  From: https://trac.osgeo.org/postgis/wiki/UserWikiRandomPoint';
 
 
 
--- Ensure the required temp table exists, avoids deploy failure on next sproc
+-- Ensure the required temp table exists, avoids deploy failure creating next sproc
 CREATE TEMP TABLE IF NOT EXISTS faker_store_location
 (
 	store_id BIGINT, place_osm_id BIGINT, place_osm_type TEXT, place_name TEXT,
