@@ -20,15 +20,9 @@ and other methods to generate fake data avoid privacy concerns.
 
 ----
 
-Original Examples -- New examples coming soon!
+Geo Faker stores generated around the United States.
 
-Version 1
-
-![alt](osm-faker-stores-in-ohio-1.png)
-
-Version 2
-
-![alt2](osm-faker-stores-in-ohio-2.png)
+![Map of United States (lower 48) with the title "Geo Faker Stores - United States".  Purple dots representing fake stores are indicated across the entire country](geo-faker-0-1-1-stores-us.jpg)
 
 
 
