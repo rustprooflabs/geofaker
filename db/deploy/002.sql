@@ -110,6 +110,8 @@ BEGIN
 
 	END LOOP;
 
+    RAISE NOTICE 'Completed';
+
 END;
 $$;
 
