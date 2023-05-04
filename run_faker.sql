@@ -1,5 +1,8 @@
 CALL geofaker.point_in_place_landuse();
-CALL geofaker.points_around_point();
+/*
+    Sets scale of distance for customers, and density of customer points 
+*/
+CALL geofaker.points_around_point(1.0, 1.0);
 
 
 DROP TABLE IF EXISTS geofaker.store;
@@ -17,6 +20,4 @@ SELECT *
     ORDER BY store_id, customer_id
 ;
 COMMENT ON TABLE geofaker.customer IS 'Created by Geo Faker, a PgOSM Flex based project.';
-
-
 

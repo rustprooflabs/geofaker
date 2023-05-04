@@ -3,6 +3,8 @@
 BEGIN;
 
 
+DROP PROCEDURE geofaker.points_around_point(NUMERIC, NUMERIC);
+
 CREATE PROCEDURE geofaker.points_around_point()
 	LANGUAGE plpgsql
 AS $$
