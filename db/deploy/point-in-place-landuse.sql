@@ -222,8 +222,9 @@ BEGIN
 
 	DROP TABLE IF EXISTS faker_store_location;
 	CREATE TEMP TABLE faker_store_location AS
-	SELECT ROW_NUMBER() OVER () AS store_id, a.place_osm_id, a.place_osm_type, a.place_name, a.road_osm_id,
-			r.osm_type AS road_osm_type, r.name AS road_name, r.ref AS road_ref,
+	SELECT ROW_NUMBER() OVER () AS store_id, a.place_name AS city,
+			r.name AS street_name, r.ref AS road_ref,
+            pgfaker.company(), pgfaker.slogan(), pgfaker.phone(),
 			public.ST_LineInterpolatePoint(public.ST_LineMerge(r.geom), random()) AS geom
 		FROM selected_roads a
 		INNER JOIN osm.road_line r ON a.road_osm_id = r.osm_id
