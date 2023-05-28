@@ -1,4 +1,4 @@
--- Verify pgosm-flex-faker:002 on pg
+-- Verify pgosm-flex-faker:extensions on pg
 
 BEGIN;
 

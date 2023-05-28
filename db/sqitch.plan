@@ -2,5 +2,7 @@
 %project=pgosm-flex-faker
 %uri=https://github.com/rustprooflabs/pgosm-flex-faker
 
-001 2023-01-29T01:19:11Z Ryan Lambert <ryan@rustprooflabs.com> # Initial schema
-002 [001] 2023-05-04T21:02:15Z Ryan Lambert <ryan@rustprooflabs.com> # Improve customer distribution
+basics 2023-05-28T15:22:54Z Ryan Lambert <ryan@rustprooflabs.com> # Add schema and extensions used by GeoFaker
+point-in-place-landuse [basics] 2023-05-28T15:29:50Z Ryan Lambert <ryan@rustprooflabs.com> # Create geofaker.point_in_place_landuse() procedure
+n-points-in-polygon [basics] 2023-05-28T15:32:03Z Ryan Lambert <ryan@rustprooflabs.com> # Create geofaker.n_points_in_polygon() function
+points-around-point [n-points-in-polygon] 2023-05-28T15:26:02Z Ryan Lambert <ryan@rustprooflabs.com> # Create geofaker.points_around_point() procedure

@@ -41,7 +41,7 @@ docker exec -it \
     geofaker python3 docker/pgosm_flex.py \
     --ram=8 \
     --region=north-america/us \
-    --subregion=colorado \
+    --subregion=district-of-columbia \
     --layerset=faker
 ```
 
