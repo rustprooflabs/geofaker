@@ -8,7 +8,8 @@ project, which provides the main functionality used by Geo Faker.
 
 
 The Geo Faker project currently creates two tables with fake store
-and fake customer data.  The use of OpenStreetMap data
+and fake customer data, in tables `geofaker.store` and `geofaker.customer`
+respectively.  The use of OpenStreetMap data
 as a starting point provides a sense of realism. The use of `random()`
 and other methods to generate fake data avoid privacy concerns.
 
@@ -22,8 +23,57 @@ and other methods to generate fake data avoid privacy concerns.
 The following images show Geo Faker at work using the data from
 the entire United States as its input.  This first image shows
 the store placements around the lower-48 states of the United States.
+Store data is saved to the table `geofaker.store`.
+
 
 ![Map of United States (lower 48) with the title "Geo Faker Stores - United States".  Purple dots representing fake stores are indicated across the entire country.  Copyright OpenStreetMap Contributors](geo-faker-0-1-1-stores-us.jpg)
+
+## Stores
+
+
+```sql
+SELECT *
+    FROM geofaker.store
+    WHERE id = 1
+;
+```
+
+```
+┌─[ RECORD 1 ]┬───────────────────────────────┐
+│ store_id    │ 1                             │
+│ city        │ Friendship Heights            │
+│ street_name │ 42nd Street Northwest         │
+│ ref         │ ¤                             │
+│ company     │ Wolff, Bauch, and Stokes      │
+│ slogan      │ Intuitive non-volatile niches │
+│ phone       │ (866) 487-9434                │
+└─────────────┴───────────────────────────────┘
+```
+
+## Customers
+
+```sql
+SELECT *
+    FROM geofaker.customer
+    WHERE id = 1
+;
+```
+
+```
+┌─[ RECORD 1 ]┬──────────────────────────────┐
+│ id          │ 1                            │
+│ store_id    │ 1                            │
+│ customer_id │ 48                           │
+│ full_name   │ Gunnar Fahey Sr.             │
+│ email       │ louveniahettinger@hamill.biz │
+│ phone       │ (588) 985-5244               │
+└─────────────┴──────────────────────────────┘
+```
+
+
+
+## More images
+
 
 The next image is zoomed in to show the faked store and customer
 data in Wisconsin, with Madison, WI in the center of the image and

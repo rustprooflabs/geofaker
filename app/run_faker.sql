@@ -2,8 +2,8 @@ CALL geofaker.point_in_place_landuse();
 /*
     Sets scale of distance for customers, and density of customer points 
 */
-CALL geofaker.points_around_point(_distance_scale:=0.5,
-                                  _density_scale:=4);
+CALL geofaker.points_around_point(_distance_scale:=1.5,
+                                  _density_scale:=1);
 
 
 DROP TABLE IF EXISTS geofaker.store;
