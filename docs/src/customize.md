@@ -11,7 +11,16 @@ see [issue #9](https://github.com/rustprooflabs/geofaker/issues/9).
 
 ## Range and Density of Customer points
 
-The customer points currently have two main tunable options.
+The customer points currently have two main tunable options:
+
+* `_distance_scale` default 1.5
+* `_density_scale` default 1.0
+
+After running the main process, you can re-run the steps creating the `geofaker.customer`
+points using the following code.  This example doubles the density scale (from 1.5 to 3)
+and reduces density from 1.0 to 0.25.
+
+> See `app/run_faker.sql` for what runs by default.
 
 
 ```sql
