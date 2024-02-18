@@ -1,4 +1,4 @@
-# PostGIS Geo Faker
+# PostGIS GeoFaker
 
 The project creates fake store and customer data with geospatial
 components based on OpenStreetMap.  The use of OpenStreetMap data
