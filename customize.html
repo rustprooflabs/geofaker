@@ -1,0 +1,260 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js rust">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Customize - Geo Faker</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "rust";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('rust')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="geo-faker.html"><strong aria-hidden="true">1.</strong> What is Geo Faker?</a></li><li class="chapter-item expanded "><a href="quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li class="chapter-item expanded "><a href="customize.html" class="active"><strong aria-hidden="true">3.</strong> Customize</a></li><li class="chapter-item expanded "><a href="docker-image.html"><strong aria-hidden="true">4.</strong> Docker image</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Geo Faker</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rustprooflabs/geofaker" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="customize"><a class="header" href="#customize">Customize</a></h1>
+<p>This section builds on the <a href="quick-start.html">Quick Start</a> section.
+Customizing the runtime operation of Geo Faker currently involves
+manually connecting to the Geo Faker database and changing things.
+In the near (ish?) future customization should become easier,
+see <a href="https://github.com/rustprooflabs/geofaker/issues/9">issue #9</a>.</p>
+<blockquote>
+<p>Warning: This project is in early development!  Things will be changing over the first few releases (e.g. before 0.5.0).</p>
+</blockquote>
+<h2 id="range-and-density-of-customer-points"><a class="header" href="#range-and-density-of-customer-points">Range and Density of Customer points</a></h2>
+<p>The customer points currently have two main tunable options:</p>
+<ul>
+<li><code>_distance_scale</code> default 1.5</li>
+<li><code>_density_scale</code> default 1.0</li>
+</ul>
+<p>After running the main process, you can re-run the steps creating the <code>geofaker.customer</code>
+points using the following code.  This example doubles the density scale (from 1.5 to 3)
+and reduces density from 1.0 to 0.25.</p>
+<blockquote>
+<p>See <code>app/run_faker.sql</code> for what runs by default.</p>
+</blockquote>
+<pre><code class="language-sql">CALL geofaker.points_around_point(_distance_scale:=3,
+                                  _density_scale:=0.25);
+
+DROP TABLE IF EXISTS geofaker.customer;
+CREATE TABLE geofaker.customer AS
+SELECT *
+    FROM faker_customer_location
+    ORDER BY store_id, customer_id
+;
+COMMENT ON TABLE geofaker.customer IS 'Created by Geo Faker, a PgOSM Flex based project.';
+</code></pre>
+<h2 id="custom-places-for-shops"><a class="header" href="#custom-places-for-shops">Custom Places for Shops</a></h2>
+<p>The procedure <code>geo_faker.point_in_place_landuse()</code> allows overriding
+the inclusion of <code>retail</code> and <code>commercial</code> landuse.
+This is done by creating a custom <code>landuse_osm_types</code> table before
+running the stored procedure.</p>
+<pre><code class="language-sql">DROP TABLE IF EXISTS landuse_osm_types;
+CREATE TEMP TABLE IF NOT EXISTS landuse_osm_types AS
+SELECT 'college' AS osm_type
+UNION
+SELECT 'recreation_ground' AS osm_type
+UNION
+SELECT 'vineyard' AS osm_type
+;
+</code></pre>
+<h2 id="external-postgres-connections"><a class="header" href="#external-postgres-connections">External Postgres connections</a></h2>
+<p>Geo Faker can load data into an external database, though the steps are currently
+more manual than then in-Docker. Start by setting
+<a href="https://pgosm-flex.com/postgres-permissions.html">Postgres permissions</a> in the
+target database.  Then setup an environment variable and run the Docker container
+with the additional parameters <a href="https://pgosm-flex.com/postgres-external.html">shown here</a>.</p>
+<p>Run the initial PgOSM Flex part of the process to load the OpenStreetMap data.</p>
+<pre><code class="language-bash">source ~/.pgosm-faker-local
+
+docker run --name geofaker -d --rm \
+    -v ~/pgosm-data:/app/output \
+    -v /etc/localtime:/etc/localtime:ro \
+    -e POSTGRES_USER=$POSTGRES_USER \
+    -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+    -e POSTGRES_HOST=$POSTGRES_HOST \
+    -e POSTGRES_DB=$POSTGRES_DB \
+    -e POSTGRES_PORT=$POSTGRES_PORT \
+    -p 5439:5432 -d rustprooflabs/geofaker
+
+docker exec -it \
+    geofaker python3 docker/pgosm_flex.py \
+    --ram=8 \
+    --region=north-america/us \
+    --subregion=colorado \
+    --layerset=faker
+</code></pre>
+<p>From the <code>geofaker</code> directory, change into the <code>db</code> folder to deploy the Sqitch
+schema needed for Geo Faker.</p>
+<pre><code class="language-bash">cd ~/git/geofaker/db
+sqitch db:pg://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB deploy
+</code></pre>
+<p>You can run the SQL steps exactly from the script.  Or customize them first.</p>
+<pre><code class="language-bash">psql -d postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB \
+    -f ~/git/geofaker/run_faker.sql
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="quick-start.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="docker-image.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="quick-start.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="docker-image.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
